@@ -370,6 +370,7 @@ footer h4 {
 }
 
 .headerimg{
+    animation: none !important;
     width: 240px;
     height: 240px;
     transition: all 2s ;

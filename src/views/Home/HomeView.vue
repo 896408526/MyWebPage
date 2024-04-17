@@ -124,14 +124,15 @@
                 </div>
                 <div :class="panelbox">
 
-                    <div class="row bg-light loadbox d-none">
-                        <div class="col-12 d-flex align-items-center">
-                            <strong>Loading...</strong>
-                            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                    
+                    <div class="row bg-light bodyLogin d-none img-thumbnail">
+                        <div class="col-12 bg-light loadbox d-none">
+                            <div class="row align-items-center" style="padding: 20px;">
+                                <strong>Loading...</strong>
+                                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row bg-light bodyLogin  d-none">
-                        <form class="px-4 py-3">
+                        <form class="col-12 text-left" style="padding: 20px;">
                             <div class="form-group">
                                 <label for="exampleDropdownFormEmail1">Email address</label>
                                 <input type="email" class="form-control" id="exampleDropdownFormEmail1"
@@ -153,8 +154,8 @@
                             <button type="button" class="btn btn-primary" @click="loginSubmit">Sign in</button>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">New around here? Sign up</a>
-                        <a class="dropdown-item" href="#">Forgot password?</a>
+                        <a class="dropdown-item text-left" href="#">New around here? Sign up</a>
+                        <a class="dropdown-item text-left" href="#">Forgot password? Update pwd</a>
                     </div>
 
                     <div class="row">
