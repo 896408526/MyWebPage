@@ -189,32 +189,28 @@ body{
     }
 }
 
-.thumbnail:hover,
-.thumbnail:focus,
-.thumbnail:active {
-    background-color: #eee !important;
-    -webkit-transform: translateY(-10px);
-    transform: translateY(-10px);
-    box-shadow: 0 0 2px 0 rgba(255, 255, 255, 0.6), 0 0 1px rgba(0, 0, 0, 0);
-}
+
 
 .thumbnail {
-    border: none !important;
     margin: 0 !important;
     padding: 0 !important;
     border-radius: 10px 0 0 10px !important;
     background-color: rgba(255, 255, 255, 0.2) !important;
-    transform: perspective(1px) translateZ(0);
-    -webkit-transform: perspective(1px) translateZ(0);
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
     transition-duration: 0.3s;
     -webkit-transition-duration: 0.3s;
-    transition-property: transform;
-    -webkit-transition-property: transform;
-    transition-timing-function: ease-out;
-    -webkit-transition-timing-function: ease-out;
-    border-radius: 10px;
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    transition-timing-function: ease;
+    -webkit-transition-timing-function: ease;
+    transition: all 0.3s;
 }
+
+.thumbnail:hover{
+    transform: translateY(-20px);
+    -webkit-transform: translateY(-20px);
+    background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
 
 .thumbnail img {
     width: 100%;

@@ -29,7 +29,7 @@
     <div class="container-fluid" style="margin-top: 50px;">
         <div class="row">
             <div class="col-4">
-                <img :src="headerImage" alt="..." class="img-circle headerimg"
+                <img :src="headerImage" alt="..." class="img-thumbnail headerimg"
                     style="margin-top: 20px;padding: 20px;;border: 1px solid #fff;" />
                 <h3 class="text-left">title</h3>
                 <table class="table">
@@ -90,27 +90,21 @@
             </div>
             <div class="col-8">
                 <div class="row mediabox" style="background-color: #fff;max-height: 1280px;overflow: auto;">
-                    <div class="col-12 " v-for="(item, index) in mediaList" :key="index">
+                    <div class="col-12 " v-for="(item, index) in mediaList" :key="index" @mousemove="checkmedia(index)" @mouseout="unChenckmedia(index)" >
                         <div v-if="index % 2 != 1">
-                            <div class="media"
-                                style="border-bottom: 2px solid #ccc;border-left: 2px solid #ccc;border-radius: 5px;">
+                            <div class="media" style="border-left: 2px solid #ccc;">
                                 <img :src="item.src" width="80px" class="align-self-center mr-3" alt="...">
                                 <div class="media-body">
                                     <h3 class="mt-0" style="border-bottom: 2px solid #ccc;">{{ item.title }}</h3>
-                                    <p style="max-height: 200px;overflow: auto;white-space: pre-wrap;text-align: left;">
-                                        {{
-                                            item.content }}</p>
+                                    <p>{{item.content }}</p>
                                 </div>
                             </div>
                         </div>
                         <div v-else>
-                            <div class="media"
-                                style="border-bottom: 2px solid #ccc;border-right: 2px solid #ccc;border-radius: 5px;">
+                            <div class="media" style="border-right: 2px solid #ccc;">
                                 <div class="media-body">
                                     <h3 class="mt-0" style="border-bottom: 2px solid #ccc;">{{ item.title }}</h3>
-                                    <p style="max-height: 200px;overflow: auto;white-space: pre-wrap;text-align: left;">
-                                        {{ item.content }}
-                                    </p>
+                                    <p>{{ item.content }}</p>
                                 </div>
                                 <img :src="item.src" width="80px" class="align-self-center ml-3" alt="...">
                             </div>
@@ -147,7 +141,7 @@ import { getCurrentInstance } from 'vue'
 
 var list = [{
                 title: "推送GitHub 2024-04-17",
-                src: require("/src/assets/header.jpg"),
+                src: "https://th.bing.com/th/id/R.f12560820c5070ee4be83c3feb569ce1?rik=l9Xz9PiZqqnDJQ&pid=ImgRaw&r=0",
                 content: `
 GitHub 发布
 使用终端
@@ -160,7 +154,7 @@ GitHub 发布
             },
             {
                 title: "拉取GitHub 2024-04-17",
-                src: require("/src/assets/header.jpg"),
+                src: "https://th.bing.com/th/id/R.f12560820c5070ee4be83c3feb569ce1?rik=l9Xz9PiZqqnDJQ&pid=ImgRaw&r=0",
                 content: `
 GitHub 拉取
 使用终端
@@ -170,29 +164,29 @@ GitHub 拉取
 `
             },{
                 title: "更改代码后提交GitHub 2024-04-17",
-                src: require("/src/assets/header.jpg"),
+                src: "https://th.bing.com/th/id/R.f12560820c5070ee4be83c3feb569ce1?rik=l9Xz9PiZqqnDJQ&pid=ImgRaw&r=0",
                 content: `
 GitHub 再次提交
 查看状态：git status或者git status -s
 所有不同的文件加入暂存区：git add .
 提交到本地仓库: git commit -m 提交备注
-推送到远程仓库：git push orgin 分支名或强制推送git push orgin 分支名 --force
+推送到远程仓库：git push orgin 分支名 或强制推送git push orgin 分支名 --force
 `
             },
             {
-                title: "GitHub登录 2024-04-17",
-                src: require("/src/assets/header.jpg"),
+                title: "登录GitHub 2024-04-17",
+                src: "https://th.bing.com/th/id/R.f12560820c5070ee4be83c3feb569ce1?rik=l9Xz9PiZqqnDJQ&pid=ImgRaw&r=0",
                 content: `
 邮箱：git config --global user.email 邮箱
 密码：git config --global user.name 密码
 `
             },
             {
-                title: "2024-04-08",
-                src: require("/src/assets/header.jpg"),
+                title: "VUE创建项目 2024-04-08",
+                src: require("/src/assets/favicon.jpg"),
                 content: `
 VUE创建项目
-VUE Create 项目名称
+VUE create 项目名称
 
 VUE启动浏览
 npm run serve
@@ -295,6 +289,15 @@ export default {
             if(count < this.pageList.length){
                 this.PageRd(parseInt(count) + 1)
             }
+        },
+        async checkmedia(e){
+            var jqDom = $(".media")[e]
+            var offsetheight = $(jqDom)[0].offsetHeight / 2 - $(jqDom).children("img")[0].offsetHeight
+            $(jqDom).children("img").css("transform","translateY(-"+ offsetheight +"px)")
+        },
+        async unChenckmedia(e){
+            var jqDom = $(".media")[e]
+            $(jqDom).children("img").css("transform","translateY(0px)")
         }
     }
 }
