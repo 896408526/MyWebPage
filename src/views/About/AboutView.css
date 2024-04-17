@@ -1,0 +1,389 @@
+body{
+    animation:navshow 2s ease forwards;
+    -webkit-animation:navshow 2s ease forwards;
+    background: rgba(0, 0, 0, 0) !important;
+    font-weight: 550;
+    min-width: 928px;
+}
+
+.navHide{
+    -webkit-animation: navhide 2s ease forwards;
+    animation:navhide 2s ease forwards;
+}
+
+@keyframes navhide {
+    from{
+        padding-top: 50px;
+    }to{
+        padding-top: 10px;
+    }
+}
+
+.navShow{
+    -webkit-animation: navshow 2s ease forwards;
+    animation:navshow 2s ease forwards;
+    background: rgba(0, 0, 0, 0) !important;
+}
+
+@keyframes navshow {
+    from{
+        top: 0px;
+    }to{
+        top: 50px;
+    }
+}
+
+.bodyMuYu {
+    width: 50%;
+}
+
+.bodyMuYu:active {
+    animation: bigidentifier 0.2s;
+}
+
+@keyframes bigidentifier {
+    from {
+        width: 50%;
+    }
+    to {
+        width: 75%;
+    }
+}
+
+.p_MuYu{
+    font-weight: 1200;
+    background: rgba(255, 255, 255, 0);
+    position: fixed;
+    left:0;
+    right:0;
+    margin:0 auto;
+    animation:gdidentifier 2s;
+}
+
+@keyframes gdidentifier {
+    from{
+        transform: translateY(50px);
+        opacity: 0;
+    }to{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+.navbar-expand-lg {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(99, 99, 99, 0.5));
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    text-align: right;
+}
+
+
+#index {
+    margin: 0;
+    padding: 0;
+    background: url("/src/assets/section-bg2.jpg") no-repeat;
+    background-size: 100% 100%;
+}
+
+#index .indexContent {
+    padding-top: 60px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#myProject {
+    background-image: url("/src/assets/section-bg.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.full-screen-div {
+    width: 100vw;
+    height: 100vh;
+}
+
+.bigtitle{
+    right: 0px;
+    font-size: 100px;
+    color: rgba(100, 100, 100, 0.5);
+    font-weight: 1200;
+}
+
+#footer{
+    background-color: #181823;
+    color: #fff;
+}
+
+
+.box.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.opacityshow {
+    animation: show 2s;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+.opacityhide {
+    animation: hide 2s;
+}
+
+@keyframes hide {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.lefttanimate {
+    animation: lefttanimate 2s;
+}
+
+@keyframes lefttanimate {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 33.33%;
+    }
+}
+
+
+
+.righttanimate {
+    animation: righttanimate 2s;
+}
+
+@keyframes righttanimate {
+    from {
+        width: 33.33%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+.thumbnail:hover,
+.thumbnail:focus,
+.thumbnail:active {
+    background-color: #eee !important;
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+    box-shadow: 0 0 2px 0 rgba(255, 255, 255, 0.6), 0 0 1px rgba(0, 0, 0, 0);
+}
+
+.thumbnail {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 10px 0 0 10px !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    transform: perspective(1px) translateZ(0);
+    -webkit-transform: perspective(1px) translateZ(0);
+    transition-duration: 0.3s;
+    -webkit-transition-duration: 0.3s;
+    transition-property: transform;
+    -webkit-transition-property: transform;
+    transition-timing-function: ease-out;
+    -webkit-transition-timing-function: ease-out;
+    border-radius: 10px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+
+.thumbnail img {
+    width: 100%;
+    max-width: 80px;
+    height: 100%;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.thumbnail .caption {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.thumbnail .caption p {
+    background-color: #fff;
+    border-radius: 10px 0 0 10px;
+    border: 5px solid #151515;
+    border-right: none;
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    padding: 5px !important;
+    font-size: 18px !important;
+    font-weight: bolder !important;
+}
+
+.nav-item a {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    color: #fff !important;
+    transition: all 0.5s ease;
+}
+
+.nav-item a:hover,
+.nav-item a:active,
+.nav-item a:focus {
+    color: #65aad5 !important;
+}
+
+.collapse .navbar-nav .active {
+    background-color: #555555;
+}
+
+.full-screen-div-top {
+    position: fixed;
+    top: 50px;
+    text-align: center;
+    font-size: 20px;
+    z-index: 1;
+    animation: identifiertop 1.5s infinite;
+    -webkit-animation: identifiertop 1.5s infinite;
+}
+
+@keyframes identifiertop {
+    0% {
+        transform: translate(0px, 0px);
+    }
+
+    50% {
+        transform: translate(0px, 10px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+.full-screen-div-botton {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    font-size: 20px;
+    z-index: 1;
+    animation: identifier 1.5s infinite;
+    -webkit-animation: identifier 1.5s infinite;
+}
+
+@keyframes identifier {
+    0% {
+        transform: translate(0px, 0px);
+    }
+
+    50% {
+        transform: translate(0px, -10px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+.full-screen-div-top>.row,
+.full-screen-div-footer>.row {
+    height: 10px;
+}
+
+footer h4 {
+    font-size: 32px;
+}
+
+.footertext {
+    font-weight: bold;
+}
+
+.media {
+    padding: 20px;
+}
+
+.thumbnailBody{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.img-circle{
+    width: 100px;
+    height: 100px;
+    border-radius: 999px;
+}
+
+.headerstyle{
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.hrShow{
+    animation: showwidth 2s ease forwards;
+}
+
+@keyframes showwidth {
+    from{
+        width: 0%;
+    }to{
+        width: 96%;
+    }
+}
+
+@keyframes hidewidth {
+    from{
+        width: 96%;
+    }to{
+        width: 0%;
+    }
+}
+
+.navbottonshow{
+    background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.bi-toggle{
+    animation: rotate360 4s linear infinite;
+}
+
+@keyframes rotate360 {
+    from{
+        transform: rotate(0);
+    }to{
+        transform: rotate(360deg);
+    }
+}
+
+.headerimg{
+    animation: rotate360 4s linear infinite;
+}
+
+.icontoggleshow{
+    animation: show 0.2s ease forwards;
+}
+
+.icontogglehide{
+    animation: hide 0.2s ease forwards;
+}
+
+.chaoxiaomaomao{
+    width:30px;
+    height: 30px;
+    animation: show 1s;
+}
+
