@@ -1,4 +1,5 @@
 <template>
+
     <nav class="navbar navbar-expand-lg navbar-light" id="mainnav">
         <a class="navbar-brand" href="#">
             <img :src="LogoImage" width="30" height="30" alt="">
@@ -12,8 +13,11 @@
             </svg>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <form class="form-inline">
+            </form>
+
+            <ul class="navbar-nav">
                 <li class="nav-item dropdown active">
                     <router-link class="nav-link collapseOptions index" attrId="index" to="#index">Index</router-link>
                     <hr class="nav_hr d-none" style="border: 2px solid #65aad5;margin: 0;" />
@@ -36,8 +40,6 @@
                         to="#footer">Footer</router-link>
                     <hr class="nav_hr d-none" style="border: 2px solid #65aad5;margin: 0;" />
                 </li>
-            </ul>
-            <ul class="navbar-nav mr-0">
                 <li class="nav-item dropdown ">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                         Support
@@ -47,14 +49,6 @@
                     </div>
                 </li>
             </ul>
-            <form class="form-inline row" style="padding: 0 30px;">
-                <div class="offset-4 offset-sm-0 col-8 col-sm-12">
-                    <div class="row">
-                        <input class="form-control col-8" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-primary col-4" type="botton">Search</button>
-                    </div>
-                </div>
-            </form>
         </div>
     </nav>
 
@@ -181,7 +175,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -205,12 +198,10 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row" style="padding: 0;margin-bottom: 50px;">
-                <button class="btn btn-info col-12" @click="backTop">回到最上</button>
-            </div>
         </div>
     </footer>
+
+    
 
     <a class="full-screen-div-top">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up"
@@ -248,7 +239,6 @@ export default {
             }
         });
 
-
         function Sleep(milliseconds) {
             return new Promise(resolve => setTimeout(resolve, milliseconds));
         }
@@ -275,9 +265,6 @@ export default {
                 $("nav").removeClass("navShow")
                 $("nav").addClass("navHide")
             }
-            $("#" + thisActive).addClass("opacityshow")
-            await Sleep(2000)
-            $("#" + thisActive).removeClass("opacityshow")
             lockcount = 0
         }
 
@@ -296,15 +283,20 @@ export default {
                 $(this).children("hr").addClass("d-none")
             })
 
-
             ActiveAction("index")
 
             let testCount = 0
 
             $(window).scroll(function (e) {
                 fitscroll('#myProject')
-                fitscroll('#index')
+                fitscroll('#index') 
                 fitscroll('#footer')
+
+                var documentHeight = $("body").height() 
+                var clientHeight = $(window).height() 
+                var scrollTop = $(window).scrollTop() 
+                var scrolled = (scrollTop / (documentHeight - clientHeight)) * 100;
+                $("#rightNavHr").css("width",scrolled+"vh")
             });
 
             function fitscroll(id) {
@@ -566,7 +558,7 @@ export default {
     },
     methods: {
         async navtoggler() {
-            if ($("#navbarSupportedContent")[0].classList.length < 3) {
+            if ($("#navbarSupportedContent")[0].classList.length < 4) {
                 $("#mainnav").addClass("navbottonshow")
                 $(".bi-toggle").addClass("icontogglehide")
                 await this.Sleep(200)
@@ -780,14 +772,6 @@ export default {
         Sleep(milliseconds) {
             return new Promise(resolve => setTimeout(resolve, milliseconds));
         },
-        backTop() {
-            router.replace('#index').hash
-            $(".navbar-nav .nav-item").removeClass('active')
-            $(".index").parent().addClass('active')
-            $('html, body').animate({
-                scrollTop: $("#index").offset().top
-            }, 200);
-        },
         async checkMuYu() {
             this.gdCount += 1
             sessionStorage.setItem("count", this.gdCount)
@@ -801,10 +785,10 @@ export default {
             var srcNumber = Math.floor(Math.random() * 2);
             var srcName = ""
             if (srcNumber == 1) {
-                srcName = "/img/hhhhh2.356fcb4b.jpg"
+                srcName = require("/src/assets/hhhhh2.jpg")
                 this.yingxiao(0)
             } else {
-                srcName = "/img/hhhhh.4b430e16.png"
+                srcName = require("/src/assets/hhhhh.png")
                 this.yingxiao(1)
             }
             $("#app").append(`
@@ -814,18 +798,22 @@ export default {
             $(".chaoxiaomaomao")[0].remove()
         },
         async yingxiao(index) {
+            var srcName = ""
+
             if (index == 0) {
+                srcName = require("/src/assets/xiaochou.wav")
                 $("#app").append(`
                     <audio autoplay class="xc">
-                        <source src="/media/xiaochou.d5d62559.wav">
+                        <source src="`+srcName+`">
                     </audio>
                 `)
                 await this.Sleep(6000)
                 $(".xc")[0].remove()
             } else {
+                srcName = require("/src/assets/chaoxiao.wav")
                 $("#app").append(`
                     <audio autoplay class="cx">
-                        <source src="/media/chaoxiao.d4483997.wav">
+                        <source src="`+srcName+`">
                     </audio>
                 `)
                 await this.Sleep(3000)

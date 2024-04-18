@@ -3,8 +3,9 @@ body{
     -webkit-animation:navshow 2s ease forwards;
     background: rgba(0, 0, 0, 0) !important;
     font-weight: 550;
-    min-width: 928px;
+    
 }
+
 
 .navHide{
     -webkit-animation: navhide 2s ease forwards;
@@ -80,52 +81,11 @@ body{
 }
 
 
-#index {
-    margin: 0;
-    padding: 0;
-    background: url("/src/assets/section-bg2.jpg") no-repeat;
-    background-size: 100% 100%;
-}
-
-#index .indexContent {
-    padding-top: 60px;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-}
-
-#myProject {
-    background-image: url("/src/assets/section-bg.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-}
-
-.full-screen-div {
-    width: 100vw;
-    height: 100vh;
-}
-
-.bigtitle{
-    right: 0px;
-    font-size: 100px;
-    color: rgba(100, 100, 100, 0.5);
-    font-weight: 1200;
-}
-
-#footer{
-    background-color: #181823;
-    color: #fff;
-}
-
-
 .box.show {
     opacity: 1;
     transform: translateY(0);
 }
 
-.opacityshow {
-    animation: show 2s;
-}
 
 @keyframes show {
     from {
@@ -136,7 +96,6 @@ body{
         opacity: 1;
     }
 }
-
 
 .opacityhide {
     animation: hide 2s;
@@ -414,10 +373,3 @@ footer h4 {
 .icontogglehide{
     animation: hide 0.2s ease forwards;
 }
-
-.chaoxiaomaomao{
-    width:30px;
-    height: 30px;
-    animation: show 1s;
-}
-

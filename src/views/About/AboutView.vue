@@ -15,7 +15,7 @@
                 <path :d="icontoggle" />
             </svg>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
 
             </ul>
@@ -27,8 +27,9 @@
     </nav>
 
     <div class="container-fluid" style="margin-top: 50px;">
+        
         <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-sm-4">
                 <img :src="headerImage" alt="..." class="img-thumbnail headerimg"
                     style="margin-top: 20px;padding: 20px;;border: 1px solid #fff;" />
                 <h3 class="text-left">title</h3>
@@ -88,7 +89,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-8">
+            <div class="col-12 col-sm-8">
+                <div class="row" style="padding: 20px;">
+                    <h3>title</h3>
+                </div>
                 <div class="row mediabox" style="background-color: #fff;max-height: 1280px;overflow: auto;">
                     <div class="col-12 " v-for="(item, index) in mediaList" :key="index" @mousemove="checkmedia(index)" @mouseout="unChenckmedia(index)" >
                         <div v-if="index % 2 != 1">
@@ -112,7 +116,7 @@
                     </div>
                 </div>
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination  justify-content-end">
+                    <ul class="pagination  justify-content-start">
                         <li class="page-item">
                             <a class="page-link" @click="pagePrev" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
@@ -183,7 +187,7 @@ GitHub 再次提交
             },
             {
                 title: "VUE创建项目 2024-04-08",
-                src: require("/src/assets/favicon.jpg"),
+                src: require("/src/assets/logo.png"),
                 content: `
 VUE创建项目
 VUE create 项目名称
