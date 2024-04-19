@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.6.2",
+    "bootstrap-switch": "^3.4.0",
     "core-js": "^3.8.3",
     "jquery": "^3.6.1",
     "uuid": "^9.0.1",

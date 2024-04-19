@@ -5,8 +5,10 @@ import store from './store'
 
 
 import '/node_modules/bootstrap/dist/css/bootstrap.css'
+import '/node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css'
 import '/node_modules/jquery/dist/jquery.min.js'
 import '/node_modules/bootstrap/dist/js/bootstrap.js'
+import '/node_modules/bootstrap-switch/dist/js/bootstrap-switch.js'
 import $ from "jquery"
 import { type } from 'jquery'
 import { data } from 'jquery'
