@@ -1,8 +1,6 @@
 <template>
-
     <nav class="navbar navbar-expand-lg navbar-light" id="mainnav">
         <a class="navbar-brand" href="#">
-            <img :src="LogoImage" width="30" height="30" alt="">
         </a>
         <button class="btn btn-outline-primary navbar-toggler" type="button" style="color: #fff;" data-toggle="collapse"
             data-target="#navbarSupportedContent" @click="navtoggler" aria-controls="navbarSupportedContent"
@@ -14,26 +12,14 @@
         </button>
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <form class="form-inline">
-            </form>
-
             <ul class="navbar-nav">
                 <li class="nav-item dropdown active">
                     <router-link class="nav-link collapseOptions index" attrId="index" to="#index">主页</router-link>
                     <hr class="nav_hr d-none" style="border: 2px solid #65aad5;margin: 0;" />
                 </li>
                 <li class="nav-item dropdown">
-                    <router-link class="nav-link dropdown-toggle collapseOptions myProject" data-toggle="dropdown"
-                        attrId="myProject" to="#myProject">我的项目</router-link>
+                    <router-link class="nav-link collapseOptions myProject"   attrId="myProject" to="#myProject">项目</router-link>
                     <hr class="nav_hr d-none" style="border: 2px solid #65aad5;margin: 0;" />
-                    <div class="dropdown-menu">
-                        <ul class="navbar-nav text-right">
-                            <li class="nav-item" style="padding-left: 30px;padding-right: 30px;">
-                                <a @click="hrefAbout" style="color: #000 !important;" class="rdabout">关于</a>
-                                <hr class="nav_hr d-none" style="border: 2px solid #65aad5;margin: 0;" />
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <router-link class="nav-link collapseOptions footer" attrId="footer"
@@ -50,7 +36,7 @@
                 </li>
                 <li>
                     <div>
-                        <input type="checkbox" name="language"  />
+                        <input type="checkbox" name="language" />
                     </div>
                 </li>
             </ul>
@@ -60,12 +46,12 @@
     <div class="container-fluid full-screen-div" id="index">
         <div class="indexContent text-white">
             <div class="row">
-                <span id="indexTitle" class="bigtitle position-absolute">主页</span>
+                <span id="indexTitle" class="bigtitle position-absolute">Index</span>
             </div>
             <div class="jumbotron" style="background-color: rgba(0, 0, 0, 0);">
                 <h1>欢迎 {{ times }}</h1>
                 <p>已获取功德 ： {{ gdCount }}</p>
-                <p><button class="btn btn-primary btn-lg" @click="chaoxiao">点击我</button></p>
+                <p><button class="btn btn-primary btn-lg" @click="laughter">点击我</button></p>
             </div>
             <div class="row text-center">
                 <div class="col-12">
@@ -88,7 +74,7 @@
         <div class="PageContent">
             <div style="padding-top: 120px;"></div>
             <div class="row">
-                <span id="myProjectTitle" class="bigtitle position-absolute">我的项目</span>
+                <span id="myProjectTitle" class="bigtitle position-absolute">项目</span>
             </div>
             <div class="row">
                 <div :class="mainClass">
@@ -121,9 +107,8 @@
                         </div>
                     </div>
                 </div>
-                <div :class="panelbox">
 
-                    
+                <div :class="panelbox">
                     <div class="row bg-light bodyLogin d-none img-thumbnail">
                         <div class="col-12 bg-light loadbox d-none">
                             <div class="row align-items-center" style="padding: 20px;">
@@ -133,7 +118,7 @@
                         </div>
                         <form class="col-12 text-left" style="padding: 20px;">
                             <div class="form-group">
-                                <label for="exampleDropdownFormEmail1">邮箱</label>
+                                <label for="exampleDropdownFormEmail1">邮箱地址</label>
                                 <input type="email" class="form-control" id="exampleDropdownFormEmail1"
                                     placeholder="email@example.com">
                             </div>
@@ -153,7 +138,7 @@
                             <button type="button" class="btn btn-primary" @click="loginSubmit">登录</button>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-left" href="#">没有账号? 注册一个</a>
+                        <a class="dropdown-item text-left" href="#">没有账号? 注册</a>
                         <a class="dropdown-item text-left" href="#">忘记密码? 修改密码</a>
                     </div>
 
@@ -180,7 +165,26 @@
                             </div>
                         </div>
                     </div>
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start d-none">
+                            <li class="page-item">
+                                <a class="page-link" @click="pagePrev" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item mainPage" v-for="(item, index) in pageList" :key="index">
+                                <a class="page-link" @click="CheckPage(index + 1)">{{ item.Count }}</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" @click="pageNext" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
+
             </div>
         </div>
     </div>
@@ -229,6 +233,9 @@
 import $ from 'jquery'
 import { useRouter } from 'vue-router';
 import { v4 as uuidv4 } from 'uuid';
+import { getCurrentInstance } from 'vue'
+import { type } from 'jquery';
+import { data } from 'jquery';
 
 var router
 var lockCount = 0
@@ -237,10 +244,16 @@ var loginLock = 0
 var attrList
 var footerlock = 0
 var testCount = 0
-
+var list = []
+var internalInstance
+var functionInstance
+var checkPageCount
 
 export default {
     setup() {
+        internalInstance = getCurrentInstance()
+        functionInstance = internalInstance.appContext.config.globalProperties
+
         if(sessionStorage.getItem("reload") == "false"){
             location.reload()
             sessionStorage.setItem("reload",true)
@@ -251,12 +264,12 @@ export default {
                 ActiveAction(to.hash)
             }
         });
-
-        ActiveAction("index")
         
+        
+
         function Sleep(milliseconds) {
             return new Promise(resolve => setTimeout(resolve, milliseconds));
-        }  
+        }   
 
         async function ActiveAction(json) {
             var thisActive = ""
@@ -270,8 +283,9 @@ export default {
             $('html, body').stop()
             $('html, body').animate({
                 scrollTop: $("#" + thisActive).offset().top
-            }, 500);
+            }, 500)
             $('nav').stop()
+            console.log(thisActive)
             if (attrList.indexOf(thisActive) == 0) {
                 $("nav").removeClass("navHide")
                 $("nav").addClass("navShow")
@@ -290,6 +304,8 @@ export default {
                 attrList[i] = list[i].attributes.attrid.value
             }
 
+            ActiveAction("index")
+
             $(".nav_hr").parent().hover(function () {
                 $(this).children("hr").addClass("hrShow")
                 $(this).children("hr").removeClass("d-none")
@@ -304,7 +320,7 @@ export default {
                 onColor:"primary",
                 offColor:"danger",
                 size:"small",
-                onSwitchChange: async (e,state)=>{
+                onSwitchChange:async (e,state)=>{
                     if(state){
                         $('html, body').animate({
                             scrollTop: $("#index").offset().top
@@ -320,9 +336,8 @@ export default {
                 fitscroll('#myProject')
                 fitscroll('#index') 
                 fitscroll('#footer')
-            })
-
-
+            });
+            
             function fitscroll(id) {
                 if (id == null) {
                     return
@@ -378,6 +393,7 @@ export default {
                 lockcount = 1
                 var thisName = $(".active").children()[0].attributes.attrid.value
                 var nextName = ""
+                
                 var nextCount = attrList.indexOf(thisName)
                 if (event.deltaY < 0) {
                     if (nextCount > 0) {
@@ -400,6 +416,7 @@ export default {
     },
     data() {
         return {
+            pageList : [],
             times: "",
             icontoggle: "M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z",
             wximage: require("/src/assets/wx.jpg"),
@@ -445,9 +462,8 @@ export default {
     created() {
         this.getTimes()
         $("#cssLoader1").addClass("d-none")
-        $("#backTopName").text("返回顶部")
+        $("#backTopName").text("BACK TO TOP")
         footerlock = 0
-        
     },
     mounted() {
         window.addEventListener("scroll",this.footershow)
@@ -462,8 +478,10 @@ export default {
             if(footerlock != 0){
                 return
             }
+            
             footerlock = 1
             if(navName == "footer"){
+                footerlock = 1
                 var list=  [
                 {
                     titile: "联系我",
@@ -472,7 +490,7 @@ export default {
                         content: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-fill" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.598-.49L10.5.99 5.598.01a.5.5 0 0 0-.196 0l-5 1A.5.5 0 0 0 0 1.5v14a.5.5 0 0 0 .598.49l4.902-.98 4.902.98a.502.502 0 0 0 .196 0l5-1A.5.5 0 0 0 16 14.5V.5zM5 14.09V1.11l.5-.1.5.1v12.98l-.402-.08a.498.498 0 0 0-.196 0L5 14.09zm5 .8V1.91l.402.08a.5.5 0 0 0 .196 0L11 1.91v12.98l-.5.1-.5-.1z"/>
                                 </svg>
-                        <span>上海市宝山区祁华路1702B</span>
+                        <span>1702B,QiHuaRoad ShangHai,SH</span>
                         `
                     },
                     {
@@ -499,7 +517,7 @@ export default {
                     ]
                 },
                 {
-                    titile: "点击数最多",
+                    titile: "点击多",
                     contentbox: "col-6",
                     list: [{
                         content: `
@@ -538,27 +556,27 @@ export default {
                     contentbox: "col-12",
                     list: [{
                         content: `
-                        <span class="footerhelp">主页</span>
+                        <span class="footerhelp">Index</span>
                         `
                     },
                     {
                         content: `
-                        <span class="footerhelp">项目</span>
+                        <span class="footerhelp">MyProject</span>
                         `
                     },
                     {
                         content: `
-                        <span class="footerhelp">尾页</span>
+                        <span class="footerhelp">Footer</span>
                         `
                     },
                     ]
                 },
                 {
-                    titile: "通讯",
+                    titile: "加入我",
                     contentbox: "col-12",
                     list: [{
                         content: `
-                        <span>立即注册以获取最新更新。</span>
+                        <span>Register now to get latest updates on promotion & coupons.</span>
                         `
                     },
                     {
@@ -568,7 +586,7 @@ export default {
                     },
                     {
                         content: `
-                        <button class="btn btn-primary">订阅</button>
+                        <button class="btn btn-primary">Subscribe</button>
                         `
                     },
                     ]
@@ -582,6 +600,8 @@ export default {
                     var text = e.target.innerText
                     text = text.replace(text[0], text[0].toLowerCase());
                     router.replace('#' + text).hash
+                    console.log(this)
+                    console.log(text)
                     ActiveAction(text)
                 })
             }
@@ -630,77 +650,66 @@ export default {
             this.times = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
         },
         async thumbnailSelect(e) {
+            checkPageCount = e
+            if (lockCount != 0) {
+                return
+            }
+            lockCount = 1
             $(".bodyLogin").addClass("d-none")
             if (e == 0) {
-                if (lockCount != 0) {
-                    return
-                }
-                lockCount = 1
+                $(".pagination").addClass("d-none")
                 this.panellist = []
                 if (this.mainClass != "col-12") {
                     await this.change(1)
                 } else {
                     await this.change(0)
                 }
+            }else{
+                await this.change(0)
             }
             if (e == 1) {
-                if (lockCount != 0) {
-                    return
-                }
-                lockCount = 1
-                await this.change(0)
-                this.panellist = [{
-                    id: "one",
-                    title: "工程云接口文档",
-                    content: ` 网址 : http://epm.marketho.cn/swagger
-                        这是一个使用ASP.NET Dynamic Data技术实现的网页，使用ASP.NET WebApi技术作为接口`
-                },
-                {
-                    id: "two",
-                    title: "微信云后台网页",
-                    content: `网址 : http://182.92.110.42
-                        这是一个使用layui框架完成的后台网页
-                        `
-                },
-                {
-                    id: "three",
-                    title: "微信云接口文档",
-                    content: `http://182.92.110.42/swagger
-                        这是使用ASP.NET WebApi实现的接口，引用swachedule包实现接口文档的显示`
-                },
-                ]
+                $(".pagination").removeClass("d-none")
+                functionInstance.$request("https://localhost:7121/ProjectInfo/GetProjectInfoDTOs","GET",{
+                "page": 1
+                }).then(async (result)=>{
+                    this.panellist =  result.data
+                    for (let i = 0; i < Math.ceil(result.count / 5); i++) {
+                        this.pageList[i] = {}
+                        this.pageList[i].Count = i + 1
+                    }
+                    $(".mainPage").removeClass("active")
+                    await this.Sleep(1)
+                    var check = $(".mainPage")[0]
+                    $(check).addClass("active")
+                    
+                }).catch((res)=>{console.log(res.responseJSON)})
                 this.showOpacity($(".accordion"))
             }
             if (e == 2) {
-                if (lockCount != 0) {
-                    return
-                }
-                lockCount = 1
-                await this.change(0)
-                this.panellist = [{
-                    id: "one",
-                    title: "素材库",
-                    content: `
-                        <p>VUE : https://cn.vuejs.org</p>
-                        <p>Pexels : https://www.pexels.com</p>
-                        <p>Bootstrap摄影 : https://www.bootstrapmb.com</p>
-                        `
-                },
-                ]
+                $(".pagination").removeClass("d-none")
+                functionInstance.$request("https://localhost:7121/LogsInfo/GetLogsInfoDTOs","GET",{
+                    "page": 1
+                }).then(async (result)=>{
+                    this.panellist = result.data
+                    for (let i = 0; i < Math.ceil(result.count / 5); i++) {
+                        this.pageList[i] = {}
+                        this.pageList[i].Count = i + 1
+                    }
+                    $(".mainPage").removeClass("active")
+                    await this.Sleep(1)
+                    var check = $(".mainPage")[0]
+                    $(check).addClass("active")
+                }).catch((res)=>{console.log(res.responseJSON)})
                 this.showOpacity($(".accordion"))
             }
             if (e == 3) {
-                if (lockCount != 0) {
-                    return
-                }
-                lockCount = 1
-                await this.change(0)
+                $(".pagination").addClass("d-none")
                 this.panellist = []
                 if (sessionStorage.getItem("token") == null) {
                     $(".bodyLogin").removeClass("d-none")
-
                 } else {
-                    this.change(2)
+                    sessionStorage.setItem("reload",false)
+                    router.push("/about")
                 }
             }
         },
@@ -773,10 +782,6 @@ export default {
                 },
                 ]
             }
-            else if (index == 2) {
-                sessionStorage.setItem("reload",false)
-                router.push("/about")
-            }
             lockCount = 0
         },
         async loginSubmit() {
@@ -788,15 +793,14 @@ export default {
             await this.Sleep(2000)
             $(".loadbox").addClass("d-none")
             $(".bodyLogin").addClass("d-none")
-            this.change(2)
             sessionStorage.setItem("token", uuidv4())
+            sessionStorage.setItem("reload",false)
+            router.push("/about")
         },
         async showOpacity(jqdocutement) {
             $(jqdocutement).addClass("opacityshow")
             await this.Sleep(2000)
             $(jqdocutement).removeClass("opacityshow")
-        },
-        footerClick(e) {
         },
         Sleep(milliseconds) {
             return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -808,17 +812,17 @@ export default {
             await this.Sleep(2000)
             $(".p_MuYu")[0].remove()
         },
-        async chaoxiao() {
+        async laughter() {
             var leftNumber = Math.floor(Math.random() * 100);
             var topNumber = Math.floor(Math.random() * 100);
             var srcNumber = Math.floor(Math.random() * 2);
             var srcName = ""
             if (srcNumber == 1) {
                 srcName = require("/src/assets/hhhhh2.jpg")
-                this.yingxiao(0)
+                this.sound(0)
             } else {
                 srcName = require("/src/assets/hhhhh.png")
-                this.yingxiao(1)
+                this.sound(1)
             }
             $("#app").append(`
                 <img src="`+ srcName + `" style="left:` + leftNumber + `vw;top:` + topNumber + `vh" class="position-fixed chaoxiaomaomao" alt="...">
@@ -826,9 +830,8 @@ export default {
             await this.Sleep(2000)
             $(".chaoxiaomaomao")[0].remove()
         },
-        async yingxiao(index) {
+        async sound(index) {
             var srcName = ""
-
             if (index == 0) {
                 srcName = require("/src/assets/xiaochou.wav")
                 $("#app").append(`
@@ -849,14 +852,50 @@ export default {
                 $(".cx")[0].remove()
             }
         },
-        hrefAbout(){
-            this.change(2)
-        }
+        pagePrev(){
+            var count = $(".mainPage.active").children().text()
+            if(count > 1){
+                this.CheckPage(parseInt(count) - 1)
+            }
+        },
+        pageNext(){ 
+            var count = $(".mainPage.active").children().text()
+            if(count < this.pageList.length){
+                this.CheckPage(parseInt(count) + 1)
+            }
+        },
+        CheckPage(index){
+            $(".mainPage").removeClass("active")
+            var check = $(".mainPage")[index - 1]
+            $(check).addClass("active")
+            if(checkPageCount == 1){
+                functionInstance.$request("https://localhost:7121/ProjectInfo/GetProjectInfoDTOs","GET",{
+                "page": index
+                }).then((result)=>{
+                    this.panellist =  result.data
+                    for (let i = 0; i < Math.ceil(result.count / 5); i++) {
+                        this.pageList[i] = {}
+                        this.pageList[i].Count = i + 1
+                    }
+                }).catch((res)=>{console.log(res.responseJSON)})
+            }
+            else if(checkPageCount == 2){
+                functionInstance.$request("https://localhost:7121/LogsInfo/GetLogsInfoDTOs","GET",{
+                "page": index
+                }).then((result)=>{
+                    this.panellist =  result.data
+                    for (let i = 0; i < Math.ceil(result.count / 5); i++) {
+                        this.pageList[i] = {}
+                        this.pageList[i].Count = i + 1
+                    }
+                }).catch((res)=>{console.log(res.responseJSON)})
+            }
+        },
     }
 }
 </script>
 
 
 <style>
-@import url("../Home_CN/ListView.css");
+@import url("../Home/ListView.css");
 </style>

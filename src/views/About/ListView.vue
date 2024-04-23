@@ -1,33 +1,16 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light" id="mainnav">
-        <a class="navbar-brand" href="/" style="color: #fff;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
-                viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-            </svg>
-        </a>
-        <button class="btn btn-outline-primary navbar-toggler" type="button" style="color: #fff;" data-toggle="collapse"
-            data-target="#navbarSupportedContent" @click="navtoggler" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-toggle"
-                viewBox="0 0 16 16">
-                <path :d="icontoggle" />
-            </svg>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-
-            </ul>
-            <form class="form-inline row" style="padding: 0 30px;">
-                <input class="form-control col-8" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary col-4" type="botton">Search</button>
-            </form>
-        </div>
-    </nav>
+    
 
     <div class="container-fluid" style="margin-top: 50px;">
-        
+        <div class="row">
+            <a class="navbar-brand" href="/" style="color: #000;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                </svg>
+            </a>
+        </div>
         <div class="row">
             <div class="col-12 col-sm-4">
                 <img :src="headerImage" alt="..." class="img-thumbnail headerimg"
@@ -122,8 +105,8 @@
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item" v-for="(item, index) in pageList" :key="index">
-                            <a class="page-link" @click="PageRd(index + 1)">{{ item.Count }}</a>
+                        <li class="page-item mainPage" v-for="(item, index) in pageList" :key="index">
+                            <a class="page-link" @click="CheckPage(index + 1)">{{ item.Count }}</a>
                         </li>
                         <li class="page-item">
                             <a class="page-link" @click="pageNext" aria-label="Next">
@@ -142,73 +125,23 @@ import $ from 'jquery'
 import { useRouter } from 'vue-router';
 import { v4 as uuidv4 } from 'uuid';
 import { getCurrentInstance } from 'vue'
+import { type } from 'jquery';
+import { data } from 'jquery';
 
-var list = [{
-                title: "推送GitHub 2024-04-17",
-                src: "https://th.bing.com/th/id/R.f12560820c5070ee4be83c3feb569ce1?rik=l9Xz9PiZqqnDJQ&pid=ImgRaw&r=0",
-                content: `
-GitHub 发布
-使用终端
-初始化（生成.git目录）：git init
-连接远程仓库：git remote add origin 仓库地址
-所有文件加入暂存区：git add .
-提交到本地仓库: git commit -m 提交备注
-推送到远程仓库：git push orgin 仓库名 或强制推送git push orgin 仓库名 --force
-`
-            },
-            {
-                title: "拉取GitHub 2024-04-17",
-                src: "https://th.bing.com/th/id/R.f12560820c5070ee4be83c3feb569ce1?rik=l9Xz9PiZqqnDJQ&pid=ImgRaw&r=0",
-                content: `
-GitHub 拉取
-使用终端
-初始化（生成.git目录）：git init
-连接远程仓库：git remote add origin 仓库地址
-从远程仓库拉取文件：git pull origin 仓库名
-`
-            },{
-                title: "更改代码后提交GitHub 2024-04-17",
-                src: "https://th.bing.com/th/id/R.f12560820c5070ee4be83c3feb569ce1?rik=l9Xz9PiZqqnDJQ&pid=ImgRaw&r=0",
-                content: `
-GitHub 再次提交
-查看状态：git status或者git status -s
-所有不同的文件加入暂存区：git add .
-提交到本地仓库: git commit -m 提交备注
-推送到远程仓库：git push orgin 分支名 或强制推送git push orgin 分支名 --force
-`
-            },
-            {
-                title: "登录GitHub 2024-04-17",
-                src: "https://th.bing.com/th/id/R.f12560820c5070ee4be83c3feb569ce1?rik=l9Xz9PiZqqnDJQ&pid=ImgRaw&r=0",
-                content: `
-邮箱：git config --global user.email 邮箱
-密码：git config --global user.name 密码
-`
-            },
-            {
-                title: "VUE创建项目 2024-04-08",
-                src: require("/src/assets/logo.png"),
-                content: `
-VUE创建项目
-VUE create 项目名称
+var list = []
 
-VUE启动浏览
-npm run serve
-
-VUE发布项目
-npn run build
-`
-            },
-            ]
+var internalInstance
+var functionInstance
 
 export default {
     setup() {
+        internalInstance = getCurrentInstance()
+        functionInstance = internalInstance.appContext.config.globalProperties
+
         if(sessionStorage.getItem("reload") == "false"){
             location.reload()
             sessionStorage.setItem("reload",true)
         }
-        const internalInstance = getCurrentInstance()
-        var functionInstance = internalInstance.appContext.config.globalProperties
         
 
         //functionInstance.$request("http://localhost:1301/api/UserInfo/GetUserDetail","GET",{
@@ -229,37 +162,29 @@ export default {
     created() {
         $("#webpack-dev-server-client-overlay").addClass("d-none")
         $("#cssLoader1").addClass("d-none")
-        for (let i = 0; i < Math.ceil(list.length / 4); i++) {
-            this.pageList[i] = {}
-            this.pageList[i].Count = i + 1
-        }
-        for (let i = 0; i < 4; i++) {
-            this.mediaList[i] = {}
-            this.mediaList[i] = list[i]
-        }
-        this.test()
+        functionInstance.$request("https://localhost:7121/LogsInfo/GetLogsInfoDTOs","GET",{
+                "page": 1
+        }).then(async (result)=>{
+            this.mediaList = result.data
+            for (let i = 0; i < Math.ceil(result.count / 5); i++) {
+                this.pageList[i] = {}
+                this.pageList[i].Count = i + 1
+            }
+            await this.Sleep(1)
+            var pageitem = $(".mainPage")[0]
+            $(pageitem).addClass("active")
+        }).catch((res)=>{console.log(res.responseJSON)})
     },
     methods: {
-        async test(){
-            await this.Sleep(1)
-            var test = $(".page-item")[1]
-            $(test).addClass("active")
-        },
-        PageRd(index) {
-            const mlist= []
-            let count = 0
-            for (let i = (index - 1) * 4; i < index * 4; i++) {
-                if(i + 1 > list.length){
-                    continue
-                }
-                mlist[count] = {}
-                mlist[count] = list[i]
-                count++
-            }
-            this.mediaList = mlist
-            $(".page-item").removeClass("active")
-            var test = $(".page-item")[index]
-            $(test).addClass("active")
+        CheckPage(index) {
+            functionInstance.$request("https://localhost:7121/LogsInfo/GetLogsInfoDTOs","GET",{
+                "page": index
+            }).then( (result)=>{
+                this.mediaList = result.data
+                $(".mainPage").removeClass("active")
+                const pageitem = $(".mainPage")[index - 1]
+                $(pageitem).addClass("active")
+            }).catch((res)=>{console.log(res.responseJSON)})
         },
         Sleep(milliseconds) {
             return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -289,13 +214,13 @@ export default {
             var count = $(".active").children().text()
             if(count > 1){
                 console.log(count)
-                this.PageRd(parseInt(count) - 1)
+                this.CheckPage(parseInt(count) - 1)
             }
         },
         pageNext(){ 
             var count = $(".active").children().text()
             if(count < this.pageList.length){
-                this.PageRd(parseInt(count) + 1)
+                this.CheckPage(parseInt(count) + 1)
             }
         },
         async checkmedia(e){

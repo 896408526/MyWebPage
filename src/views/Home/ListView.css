@@ -411,6 +411,9 @@ footer h4 {
     }
 }
 
-
+.card-body{
+    max-height: 15vh;
+    overflow: auto;
+}
 
 
