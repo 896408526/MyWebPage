@@ -75,6 +75,7 @@
             <div class="col-12 col-sm-8">
                 <div class="row" style="padding: 20px;">
                     <h3>title</h3>
+                    <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary justify-content-end ml-auto" style="border-radius: 999px;width: 40px;height: 40px;" @click="addLogs">+</button>
                 </div>
                 <div class="row mediabox" style="background-color: #fff;max-height: 1280px;overflow: auto;">
                     <div class="col-12 " v-for="(item, index) in mediaList" :key="index" @mousemove="checkmedia(index)" @mouseout="unChenckmedia(index)" >
@@ -118,6 +119,41 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group text-left">
+                            <label for="modalTitle">Title</label>
+                            <input type="text" class="form-control" id="modalTitle" aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group text-left">
+                            <label for="modalSrc">Src</label>
+                            <input type="text" class="form-control" id="modalSrc">
+                        </div>
+                        <div class="form-group text-left">
+                            <label for="modalContent">Content</label>
+                            <textarea class="form-control" id="modalContent" rows="3" @change="inputContent" ></textarea>
+                            <small id="emailHelp" class="form-text text-muted text-right">{{ contentCount == null ? 0 : contentCount }}/500</small>
+                        </div>
+                    </form> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" @click="save()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -138,12 +174,6 @@ export default {
         internalInstance = getCurrentInstance()
         functionInstance = internalInstance.appContext.config.globalProperties
 
-        if(sessionStorage.getItem("reload") == "false"){
-            location.reload()
-            sessionStorage.setItem("reload",true)
-        }
-        
-
         //functionInstance.$request("http://localhost:1301/api/UserInfo/GetUserDetail","GET",{
         //    token:"",
         //    secret:""
@@ -153,6 +183,7 @@ export default {
     },
     data() {
         return {
+            contentCount : 0,
             pageList: [],
             mediaList : [],
             icontoggle: "M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z",
@@ -162,22 +193,25 @@ export default {
     created() {
         $("#webpack-dev-server-client-overlay").addClass("d-none")
         $("#cssLoader1").addClass("d-none")
-        functionInstance.$request("https://localhost:7121/LogsInfo/GetLogsInfoDTOs","GET",{
-                "page": 1
-        }).then(async (result)=>{
-            this.mediaList = result.data
-            for (let i = 0; i < Math.ceil(result.count / 5); i++) {
-                this.pageList[i] = {}
-                this.pageList[i].Count = i + 1
-            }
-            await this.Sleep(1)
-            var pageitem = $(".mainPage")[0]
-            $(pageitem).addClass("active")
-        }).catch((res)=>{console.log(res.responseJSON)})
+        this.GetLogsInfoDTOs(1)
     },
     methods: {
+        GetLogsInfoDTOs(page){
+            functionInstance.$request("http://182.92.110.42:8080/api/LogsInfo/GetLogsInfoDTOs","GET",{
+                "page": page
+            }).then(async (result)=>{
+                this.mediaList = result.data
+                for (let i = 0; i < Math.ceil(result.count / 5); i++) {
+                    this.pageList[i] = {}
+                    this.pageList[i].Count = i + 1
+                }
+                await this.Sleep(1)
+                var pageitem = $(".mainPage")[0]
+                $(pageitem).addClass("active")
+            }).catch((res)=>{alert(res.responseJSON.msg)})          
+        },
         CheckPage(index) {
-            functionInstance.$request("https://localhost:7121/LogsInfo/GetLogsInfoDTOs","GET",{
+            functionInstance.$request("http://182.92.110.42:8080/api/LogsInfo/GetLogsInfoDTOs","GET",{
                 "page": index
             }).then( (result)=>{
                 this.mediaList = result.data
@@ -211,14 +245,14 @@ export default {
             }
         },
         pagePrev(){
-            var count = $(".active").children().text()
+            var count = $(".mainPage.active").children().text()
             if(count > 1){
                 console.log(count)
                 this.CheckPage(parseInt(count) - 1)
             }
         },
         pageNext(){ 
-            var count = $(".active").children().text()
+            var count = $(".mainPage.active").children().text()
             if(count < this.pageList.length){
                 this.CheckPage(parseInt(count) + 1)
             }
@@ -231,6 +265,34 @@ export default {
         async unChenckmedia(e){
             var jqDom = $(".media")[e]
             $(jqDom).children("img").css("transform","translateY(0px)")
+        },
+        inputContent(e){
+            var modaldocutment = $("#modalContent")[0]
+            var contentlength = $(modaldocutment).val().length
+            if(contentlength > 500){
+                this.contentCount = 500
+                $(modaldocutment).val($(modaldocutment).val().substring(0,500))
+            }else{
+                this.contentCount = contentlength
+            }
+        },
+        save(){
+            functionInstance.$request("http://182.92.110.42:8080/LogsInfo/CreateLogsInfo","POST",
+            JSON.stringify({
+                "title": $("#modalTitle").val(),
+                "src": $("#modalSrc").val(),
+                "content": $("#modalContent").val()
+            })).then((result)=>{
+                if(result.code != 200){
+                    alert(result.msg)
+                    return
+                }
+                alert(result.msg)
+                $('#exampleModal').modal('hide')
+                var count = $(".mainPage.active").children().text()
+                this.GetLogsInfoDTOs(parseInt(count))
+                this.CheckPage(parseInt(count))
+            }).catch((res)=>{alert(res.responseJSON.msg)})
         }
     }
 }

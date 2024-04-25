@@ -396,7 +396,7 @@ footer h4 {
     animation: show 1s;
 }
 
-#footeritem{
+.footeritem{
     transition: all 0.2s;
     animation: footeritemIdentifier 1.5s;
 }

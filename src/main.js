@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios';
 
 
 import '/node_modules/bootstrap/dist/css/bootstrap.css'
@@ -15,21 +16,43 @@ import { data } from 'jquery'
 import { error } from 'jquery'
 
 const app = createApp(App)
-app.config.globalProperties.$request = (url,type,data)=>{
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url:url,
-            type:type,
-            data:data,
-            success:(res)=>{
-                resolve(res)
-            },
-            error:(res)=>{
-                resolve(res)
-            }
+app.config.globalProperties.$request = (url,method,params)=>{
+    if(method=="GET"){
+        return new Promise((resolve, reject) => {
+            axios({
+                method: method,
+                url: url,
+                headers :{
+                    "Content-Type" : "application/json"
+                },
+                params : params
+            }).then((result)=>{
+                resolve(result.data)
+            }).catch((error) =>{
+                console.error(error);
+            }) 
+                
         })
-    })
+    }else{
+        return new Promise((resolve, reject) => {
+            axios({
+                method: method,
+                url: url,
+                headers :{
+                    "Content-Type" : "application/json"
+                },
+                data : params
+            }).then((result)=>{
+                resolve(result.data)
+            }).catch((error) =>{
+                console.error(error);
+            }) 
+                
+        })
+    }
+    
 }
+    
 
 
 app.use(store)

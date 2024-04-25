@@ -26,7 +26,7 @@
                         to="#footer">尾页</router-link>
                     <hr class="nav_hr d-none" style="border: 2px solid #65aad5;margin: 0;" />
                 </li>
-                <li class="nav-item dropdown ">
+                <li class="nav-item">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                         支持
                     </a>
@@ -46,7 +46,7 @@
     <div class="container-fluid full-screen-div" id="index">
         <div class="indexContent text-white">
             <div class="row">
-                <span id="indexTitle" class="bigtitle position-absolute">Index</span>
+                <span id="indexTitle" class="bigtitle position-absolute">主页</span>
             </div>
             <div class="jumbotron" style="background-color: rgba(0, 0, 0, 0);">
                 <h1>欢迎 {{ times }}</h1>
@@ -117,14 +117,15 @@
                             </div>
                         </div>
                         <form class="col-12 text-left" style="padding: 20px;">
+                            <h1>{{logintitle}}</h1>
                             <div class="form-group">
-                                <label for="exampleDropdownFormEmail1">邮箱地址</label>
-                                <input type="email" class="form-control" id="exampleDropdownFormEmail1"
+                                <label for="exampleDropdownFormEmail1">{{input1}}</label>
+                                <input type="email" class="form-control" id="Email"   value=""
                                     placeholder="email@example.com">
                             </div>
                             <div class="form-group">
-                                <label for="exampleDropdownFormPassword1">密码</label>
-                                <input type="password" class="form-control" id="exampleDropdownFormPassword1"
+                                <label for="exampleDropdownFormPassword1">{{input2}}</label>
+                                <input type="password" class="form-control" id="Password"  value=""
                                     placeholder="Password">
                             </div>
                             <div class="form-group">
@@ -135,11 +136,18 @@
                                     </label>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary" @click="loginSubmit">登录</button>
+                            <button type="submit" class="btn btn-primary" @click="loginSubmit">{{ logintitle }}</button>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-left" href="#">没有账号? 注册</a>
-                        <a class="dropdown-item text-left" href="#">忘记密码? 修改密码</a>
+                        <a class="dropdown-item text-left"  @click="SignUp()">{{ btninput }}</a>
+                        <a class="dropdown-item text-left"  @click="Updatepwd()">忘记密码? 修改密码</a>
+                    </div>
+
+                    <div class="row bg-light" style="transition: all 0.5s;border-radius: 5px;">
+                        <div class="col-4 col-sm-4 col-md-3 col-lg-2" v-for="(item,index) in fileitem" :key="index" style="padding-top: 20px;padding-bottom: 20px;">
+                            <img :src="fileImage" class="figure-img mx-auto d-block  rounded" width="30" :alt="item.fileName">
+                            <figcaption class="figure-caption text-center">{{item.fileName}}</figcaption>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -195,7 +203,7 @@
                 <span id="footerTitle" class="bigtitle position-absolute">尾页</span>
             </div>
             <div class="row" style="padding: 50px;">
-                <div class="col-6 col-sm-3" v-for="item in footerlist" :key="item" id="footeritem">
+                <div class="col-6 col-sm-3 footeritem" v-for="item in footerlist" :key="item">
                     <div class="row">
                         <h4 style="overflow: hidden;text-overflow :ellipsis;white-space :nowrap;">{{ item.titile }}
                         </h4>
@@ -233,7 +241,7 @@
 import $ from 'jquery'
 import { useRouter } from 'vue-router';
 import { v4 as uuidv4 } from 'uuid';
-import { getCurrentInstance } from 'vue'
+import { getCurrentInstance, reactive } from 'vue'
 import { type } from 'jquery';
 import { data } from 'jquery';
 
@@ -248,24 +256,19 @@ var list = []
 var internalInstance
 var functionInstance
 var checkPageCount
+var checkLoginType = 0
 
 export default {
     setup() {
         internalInstance = getCurrentInstance()
         functionInstance = internalInstance.appContext.config.globalProperties
 
-        if(sessionStorage.getItem("reload") == "false"){
-            location.reload()
-            sessionStorage.setItem("reload",true)
-        }
         router = useRouter();
         router.beforeEach((to, from) => {
             if (to.hash) {
                 ActiveAction(to.hash)
             }
         });
-        
-        
 
         function Sleep(milliseconds) {
             return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -285,7 +288,6 @@ export default {
                 scrollTop: $("#" + thisActive).offset().top
             }, 500)
             $('nav').stop()
-            console.log(thisActive)
             if (attrList.indexOf(thisActive) == 0) {
                 $("nav").removeClass("navHide")
                 $("nav").addClass("navShow")
@@ -322,11 +324,7 @@ export default {
                 size:"small",
                 onSwitchChange:async (e,state)=>{
                     if(state){
-                        $('html, body').animate({
-                            scrollTop: $("#index").offset().top
-                        }, 500)
                         await Sleep(500)
-                        sessionStorage.setItem("reload",false)
                         router.push("/")
                     }
                 }
@@ -416,8 +414,16 @@ export default {
     },
     data() {
         return {
+            fileImage : require("/src/assets/file.png"),
+            btninput : "没有账号? 注册一个",
+            logintitle : "登录",
+            input1 : "邮箱",
+            input2 : "密码",
+            email : "",
+            password : "",
             pageList : [],
             times: "",
+            fileitem:[],
             icontoggle: "M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z",
             wximage: require("/src/assets/wx.jpg"),
             LogoImage: require("/src/assets/logo.jpg"),
@@ -431,31 +437,7 @@ export default {
             captionClass: "text-align:center",
             bodyClass: "offset-3 col-6",
             mainClass: "col-12",
-            list: [{
-                title: "转换",
-                list: [{
-                    src: require("/src/assets/ichange.png"),
-                }]
-            },
-            {
-                title: "项目",
-                list: [{
-                    src: require("/src/assets/iproject.png"),
-                }]
-            },
-            {
-                title: "日志",
-                list: [{
-                    src: require("/src/assets/ilogs.png"),
-                }]
-            },
-            {
-                title: "关于",
-                list: [{
-                    src: require("/src/assets/iabout.jpg"),
-                }]
-            },
-            ],
+            list: [],
             footerlist : [],
         }
     },
@@ -463,26 +445,14 @@ export default {
         this.getTimes()
         $("#cssLoader1").addClass("d-none")
         $("#backTopName").text("BACK TO TOP")
-        footerlock = 0
-    },
-    mounted() {
-        window.addEventListener("scroll",this.footershow)
-    },
-    beforeDestroy() {
-        window.removeEventListener("scroll",this.footershow)
-    },
-    methods: {
-        async footershow(){
-            this.footershow = this.footershow.bind(this)
-            var navName = $(".active").children()[0].attributes.attrid.value
-            if(footerlock != 0){
-                return
-            }
-            
-            footerlock = 1
-            if(navName == "footer"){
-                footerlock = 1
-                var list=  [
+        functionInstance.$request("http://182.92.110.42:8080/api/UserInfo/CreateUserInfo","POST",
+        JSON.stringify({}))
+        functionInstance.$request("http://182.92.110.42:8080/api/UserInfo/GetUserInfoDTOs","GET",
+        JSON.stringify({})).then((result)=>{
+            sessionStorage.setItem("count",parseInt(result[0].muYuCheck))
+            this.gdCount = parseInt(result[0].muYuCheck)
+        }).catch()
+        this.footerlist = [
                 {
                     titile: "联系我",
                     contentbox: "col-12",
@@ -591,17 +561,71 @@ export default {
                     },
                     ]
                 }
-                ]
-                for (let i = 0; i < list.length; i++) {
-                    this.footerlist[i] =  list[i]
-                    await this.Sleep(800)
-                }    
+        ]
+        this.list = [{
+                title: "转换",
+                list: [{
+                    src: require("/src/assets/ichange.png"),
+                }]
+            },
+            {
+                title: "项目",
+                list: [{
+                    src: require("/src/assets/iproject.png"),
+                }]
+            },
+            {
+                title: "日志",
+                list: [{
+                    src: require("/src/assets/ilogs.png"),
+                }]
+            },
+            {
+                title: "关于",
+                list: [{
+                    src: require("/src/assets/iabout.jpg"),
+                }]
+            },
+        ]
+        footerlock = 0
+    },
+    mounted() {
+        window.addEventListener("scroll",this.footershow)
+        window.addEventListener("visibilitychange",this.handleVisiable)
+    },
+    beforeDestroy() {
+        window.removeEventListener("scroll",this.footershow)
+        window.removeEventListener("visibilitychange",this.handleVisiable)
+    },
+    methods: {
+        async handleVisiable(e){
+            if(e.target.visibilityState == "hidden"){
+                functionInstance.$request("http://182.92.110.42:8080/api/UserInfo/UpdateUserInfoCheck","POST",
+                JSON.stringify({
+                    "muYuCheck" : sessionStorage.getItem("count") == null ? 0 :sessionStorage.getItem("count")
+                }))
+            }else if(e.target.visibilityState == "visible"){
+            }
+        },
+        async footershow(){
+            var jqdocutement = $(".dropdown.active").children()[0]
+            var navName = $(jqdocutement).attr("attrid")
+            if(navName == "footer"){
+                if(footerlock != 0){
+                    return
+                }
+                footerlock = 1
+                $(".footeritem").addClass("d-none")
+                for (let i = 0; i < $(".footeritem").length; i++) {
+                    const nowFooterItem = $(".footeritem")[i]
+                    $(nowFooterItem).removeClass("d-none")
+                    await this.Sleep(500)
+                }
+
                 $(".footerhelp").on("click", (e) => {
                     var text = e.target.innerText
                     text = text.replace(text[0], text[0].toLowerCase());
                     router.replace('#' + text).hash
-                    console.log(this)
-                    console.log(text)
                     ActiveAction(text)
                 })
             }
@@ -655,6 +679,7 @@ export default {
                 return
             }
             lockCount = 1
+            this.fileitem = []
             $(".bodyLogin").addClass("d-none")
             if (e == 0) {
                 $(".pagination").addClass("d-none")
@@ -669,8 +694,10 @@ export default {
             }
             if (e == 1) {
                 $(".pagination").removeClass("d-none")
-                functionInstance.$request("https://localhost:7121/ProjectInfo/GetProjectInfoDTOs","GET",{
-                "page": 1
+                functionInstance.$request("http://182.92.110.42:8080/api/ProjectInfo/GetProjectInfoDTOs","GET",{
+                "page": 1,
+                "title": "x",
+                "content" : "x",
                 }).then(async (result)=>{
                     this.panellist =  result.data
                     for (let i = 0; i < Math.ceil(result.count / 5); i++) {
@@ -682,12 +709,12 @@ export default {
                     var check = $(".mainPage")[0]
                     $(check).addClass("active")
                     
-                }).catch((res)=>{console.log(res.responseJSON)})
+                }).catch((res)=>{alert(res.responseJSON.msg)})
                 this.showOpacity($(".accordion"))
             }
             if (e == 2) {
                 $(".pagination").removeClass("d-none")
-                functionInstance.$request("https://localhost:7121/LogsInfo/GetLogsInfoDTOs","GET",{
+                functionInstance.$request("http://182.92.110.42:8080/api/LogsInfo/GetLogsInfoDTOs","GET",{
                     "page": 1
                 }).then(async (result)=>{
                     this.panellist = result.data
@@ -699,7 +726,7 @@ export default {
                     await this.Sleep(1)
                     var check = $(".mainPage")[0]
                     $(check).addClass("active")
-                }).catch((res)=>{console.log(res.responseJSON)})
+                }).catch((res)=>{alert(res.responseJSON.msg)})
                 this.showOpacity($(".accordion"))
             }
             if (e == 3) {
@@ -708,8 +735,24 @@ export default {
                 if (sessionStorage.getItem("token") == null) {
                     $(".bodyLogin").removeClass("d-none")
                 } else {
-                    sessionStorage.setItem("reload",false)
-                    router.push("/about")
+                    this.fileitem = [
+                    {
+                        fileName : "xxx文件"
+                    },
+                    {
+                        fileName : "xxx文件"
+                    },
+                    {
+                        fileName : "xxx文件"
+                    },
+                    {
+                        fileName : "xxx文件"
+                    },]
+                    functionInstance.$request("http://182.92.110.42:8080/api/ProjectInfo/GetProjectInfoDTOs","GET",{
+                        "page": 1
+                    }).then(async (result)=>{
+                        
+                    }).catch((res)=>{alert(res.responseJSON.msg)})
                 }
             }
         },
@@ -789,13 +832,51 @@ export default {
                 return
             }
             loginLock = 1
-            $(".loadbox").removeClass("d-none")
-            await this.Sleep(2000)
-            $(".loadbox").addClass("d-none")
-            $(".bodyLogin").addClass("d-none")
-            sessionStorage.setItem("token", uuidv4())
-            sessionStorage.setItem("reload",false)
-            router.push("/about")
+            console.log(123)
+            var requestUrl
+            if(checkLoginType == 0){
+                requestUrl = "http://182.92.110.42:8080/api/UserInfo/GetUserInfo"
+            }else if(checkLoginType == 1){
+                requestUrl = "http://182.92.110.42:8080/api/UserInfo/CreateUserInfo"
+            }else if(checkLoginType == 2){
+                requestUrl = "http://182.92.110.42:8080/api/UserInfo/UpdateUserInfoPassword"
+            }
+            functionInstance.$request(requestUrl,"POST",
+            JSON.stringify({
+                "email" : $("#Email").val(),
+                "password" : $("#Password").val()
+            })).then(async (result)=>{
+                if(result.code != 200){
+                    alert(result.msg)
+                    return
+                }
+                $(".loadbox").removeClass("d-none")
+                await this.Sleep(2000)
+                alert(result.msg)
+                $(".loadbox").addClass("d-none")
+                $(".bodyLogin").addClass("d-none")
+                sessionStorage.setItem("token",123)
+            }).catch(()=>{alert("账号密码错误")})
+            loginLock = 0
+            
+        },
+        SignUp(){
+            if(this.btninput == "没有账号? 注册一个"){
+                checkLoginType = 1
+                this.input2 = "密码"
+                this.logintitle = "注册"
+                this.btninput = "已有账号? 继续登录"
+            }else{
+                checkLoginType = 0
+                this.input2 = "密码"
+                this.logintitle = "登录"
+                this.btninput = "没有账号? 注册一个"
+            }
+        },
+        Updatepwd(){
+            checkLoginType = 2
+            this.input2 = "新密码"
+            this.logintitle = "修改密码"
         },
         async showOpacity(jqdocutement) {
             $(jqdocutement).addClass("opacityshow")
@@ -869,7 +950,7 @@ export default {
             var check = $(".mainPage")[index - 1]
             $(check).addClass("active")
             if(checkPageCount == 1){
-                functionInstance.$request("https://localhost:7121/ProjectInfo/GetProjectInfoDTOs","GET",{
+                functionInstance.$request("http://182.92.110.42:8080/api/ProjectInfo/GetProjectInfoDTOs","GET",{
                 "page": index
                 }).then((result)=>{
                     this.panellist =  result.data
@@ -877,10 +958,10 @@ export default {
                         this.pageList[i] = {}
                         this.pageList[i].Count = i + 1
                     }
-                }).catch((res)=>{console.log(res.responseJSON)})
+                }).catch((res)=>{alert(res.responseJSON.msg)})
             }
             else if(checkPageCount == 2){
-                functionInstance.$request("https://localhost:7121/LogsInfo/GetLogsInfoDTOs","GET",{
+                functionInstance.$request("http://182.92.110.42:8080/api/LogsInfo/GetLogsInfoDTOs","GET",{
                 "page": index
                 }).then((result)=>{
                     this.panellist =  result.data
@@ -888,7 +969,7 @@ export default {
                         this.pageList[i] = {}
                         this.pageList[i].Count = i + 1
                     }
-                }).catch((res)=>{console.log(res.responseJSON)})
+                }).catch((res)=>{alert(res.responseJSON)})
             }
         },
     }
